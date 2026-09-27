@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --popu-bg:#f4f7f8; --popu-surface:#fff; --popu-muted:#f8fafb; --popu-border:#dce5e8;
+  --popu-text:#102027; --popu-sub:#64747b; --popu-teal:#0f8f86; --popu-teal-dark:#08766f;
+  --popu-navy:#102a33; --popu-danger:#c2413d; --popu-warning:#c47a18;
+}
+@layer base {
+  html,body,#root{min-height:100%;}
+  body{margin:0;min-width:320px;background:var(--popu-bg);color:var(--popu-text);font-family:"Plus Jakarta Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  button,input,textarea,select{font:inherit} button{cursor:pointer}
+  ::selection{background:rgba(15,143,134,.18);color:var(--popu-text)}
+  code,pre,.font-mono,[data-mono]{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#c8d4d8;border-radius:999px}::-webkit-scrollbar-thumb:hover{background:#9eafb5}
+*{scrollbar-width:thin;scrollbar-color:#c8d4d8 transparent}
+.popu-surface{background:#fff;border:1px solid var(--popu-border);box-shadow:0 1px 2px rgba(16,42,51,.04)}
+.popu-surface-muted{background:var(--popu-muted);border:1px solid var(--popu-border)}
+.popu-label{font-size:10px;line-height:1.2;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--popu-sub)}
+.popu-mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}

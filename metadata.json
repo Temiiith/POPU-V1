@@ -1,0 +1,7 @@
+{
+  "name": "POPU - AI Epidemiological Intelligence Agent",
+  "description": "AI-powered epidemiological intelligence workspace for disease surveillance, anomaly detection, forecasting, and signal investigation across Nigeria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
