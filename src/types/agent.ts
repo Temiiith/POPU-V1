@@ -188,6 +188,8 @@ export interface InvestigationTrace {
   anomalyEngine: string;
   forecastEngine: string;
   evidenceItemsCount: number;
+    riskLevel: 'LOW' | 'MODERATE' | 'ELEVATED';
+  riskScore: number;
   aiInterpretationHash: string;
   humanReviewStatus: 'Pending Human Verification' | 'Reviewed and Signed Off';
   syntheticDataNotice: 'SYNTHETIC DEMONSTRATION DATA - NOT FOR OFFICIAL CLINICAL ACTION';

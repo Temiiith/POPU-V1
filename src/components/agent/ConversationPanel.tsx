@@ -37,24 +37,24 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-900 border-r border-slate-800">
+    <div className="flex flex-col h-full bg-[var(--popu-surface)] border-r border-[var(--popu-border)]">
       {/* Top Panel Banner */}
-      <div className="px-4 py-3 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-[var(--popu-border)] bg-[var(--popu-muted)] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-teal-400"></div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+          <div className="w-2 h-2 rounded-full bg-[var(--popu-teal)]"></div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--popu-text)]">
             Investigation Dialog
           </span>
         </div>
-        <span className="text-[10px] font-mono text-slate-500">
+        <span className="text-[10px] font-mono text-[var(--popu-sub)]">
           Agent Mode: Structured Workflow
         </span>
       </div>
 
       {/* Suggested Prompts Shelf */}
-      <div className="p-3 border-b border-slate-800/80 bg-slate-925">
-        <div className="text-[11px] font-medium text-slate-400 mb-2 flex items-center gap-1.5">
-          <Sparkles className="w-3 h-3 text-teal-400" />
+      <div className="p-3 border-b border-[var(--popu-border)] bg-[var(--popu-muted)]">
+        <div className="text-[11px] font-medium text-[var(--popu-sub)] mb-2 flex items-center gap-1.5">
+          <Sparkles className="w-3 h-3 text-[var(--popu-teal)]" />
           <span>Suggested Investigation Prompts:</span>
         </div>
         <div className="flex flex-col gap-1.5">
@@ -63,7 +63,7 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
               key={idx}
               disabled={isInvestigating}
               onClick={() => handleSelectPrompt(p)}
-              className="text-left text-xs px-2.5 py-1.5 rounded bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-teal-300 border border-slate-800/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed truncate"
+              className="text-left text-xs px-2.5 py-1.5 rounded bg-[var(--popu-surface)]/90 hover:bg-[var(--popu-muted)] text-[var(--popu-sub)] hover:text-[var(--popu-teal)] border border-[var(--popu-border)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed truncate"
             >
               "{p}"
             </button>
@@ -81,7 +81,7 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
             }`}
           >
             {msg.sender === 'agent' && (
-              <div className="w-6 h-6 rounded-md bg-teal-500/20 border border-teal-500/40 text-teal-300 flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-md bg-[var(--popu-muted)] border border-[var(--popu-border)] text-[var(--popu-teal)] flex items-center justify-center shrink-0 mt-0.5">
                 <Bot className="w-3.5 h-3.5" />
               </div>
             )}
@@ -89,8 +89,8 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
             <div
               className={`max-w-[85%] rounded-lg p-3 ${
                 msg.sender === 'user'
-                  ? 'bg-teal-600 text-white font-medium'
-                  : 'bg-slate-950 border border-slate-800 text-slate-200'
+                  ? 'bg-[var(--popu-teal)] text-[var(--popu-bg)] font-medium'
+                  : 'bg-[var(--popu-muted)] border border-[var(--popu-border)] text-[var(--popu-text)]'
               }`}
             >
               <div className="flex items-center justify-between gap-2 mb-1 text-[10px] opacity-75">
@@ -101,7 +101,7 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
             </div>
 
             {msg.sender === 'user' && (
-              <div className="w-6 h-6 rounded-md bg-slate-800 text-slate-300 flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-md bg-[var(--popu-muted)] text-[var(--popu-sub)] flex items-center justify-center shrink-0 mt-0.5">
                 <User className="w-3.5 h-3.5" />
               </div>
             )}
@@ -109,15 +109,15 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
         ))}
 
         {isInvestigating && (
-          <div className="flex items-center gap-2.5 p-3 rounded bg-slate-950/70 border border-teal-500/30 text-teal-300 text-xs">
-            <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+          <div className="flex items-center gap-2.5 p-3 rounded bg-[var(--popu-muted)]/70 border border-[var(--popu-teal)]/30 text-[var(--popu-teal)] text-xs">
+            <span className="w-2 h-2 rounded-full bg-[var(--popu-teal)] animate-ping"></span>
             <span>POPU Agent is executing investigation workflow...</span>
           </div>
         )}
       </div>
 
       {/* Bottom Input Area */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-slate-800 bg-slate-950">
+      <form onSubmit={handleSubmit} className="p-3 border-t border-[var(--popu-border)] bg-[var(--popu-muted)]">
         <div className="relative flex items-center">
           <input
             type="text"
@@ -125,17 +125,17 @@ export const ConversationPanel: React.FC<ConversationPanelProps> = ({
             onChange={(e) => setInputText(e.target.value)}
             disabled={isInvestigating}
             placeholder="E.g. Investigate the cholera signal in Edo State..."
-            className="w-full bg-slate-900 border border-slate-700 rounded-md py-2.5 pl-3 pr-10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 disabled:opacity-50"
+            className="w-full bg-[var(--popu-surface)] border border-[var(--popu-border)] rounded-md py-2.5 pl-3 pr-10 text-xs text-[var(--popu-text)] placeholder-[var(--popu-sub)] focus:outline-none focus:border-[var(--popu-teal)] focus:ring-1 focus:ring-[var(--popu-teal)] disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={!inputText.trim() || isInvestigating}
-            className="absolute right-1.5 p-1.5 text-teal-400 hover:text-teal-300 disabled:text-slate-600 disabled:cursor-not-allowed transition-colors"
+            className="absolute right-1.5 p-1.5 text-[var(--popu-teal)] hover:text-[var(--popu-teal)] disabled:text-[var(--popu-sub)] disabled:cursor-not-allowed transition-colors"
           >
             <Send className="w-4 h-4" />
           </button>
         </div>
-        <div className="mt-1.5 flex items-center justify-between text-[10px] text-slate-500">
+        <div className="mt-1.5 flex items-center justify-between text-[10px] text-[var(--popu-sub)]">
           <span>Targeting: Diseases &amp; LGAs across Nigeria</span>
           <span className="font-mono">Ready</span>
         </div>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Cpu, Activity, TrendingUp, HelpCircle } from 'lucide-react';
+import { Cpu } from 'lucide-react';
 import { AnomalyService } from '../../services/anomalyService';
 import { AnomalyChart } from '../agent/AnomalyChart';
-import { AnomalyMethod, AnomalyResult } from '../../types/agent';
+import { AnomalyResult } from '../../types/agent';
+import StatusTag from '../ui/StatusTag';
 
 export const ModelsView: React.FC = () => {
   const [anomaly, setAnomaly] = useState<AnomalyResult>(() =>
@@ -53,41 +54,50 @@ export const ModelsView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2.5">
-            <Cpu className="w-5 h-5 text-teal-400" />
+          <h2 className="text-xl font-bold text-[var(--popu-text)] flex items-center gap-2.5">
+            <Cpu className="w-5 h-5 text-[var(--popu-teal)]" />
             <span>Mathematical &amp; Epidemiological Models</span>
           </h2>
-          <div className="text-xs text-slate-400 font-mono mt-0.5">
+
+          <div className="text-xs text-[var(--popu-sub)] font-mono mt-0.5">
             Deterministic statistical and forecasting engines powering POPU triage
           </div>
         </div>
 
-        <div className="text-xs font-mono text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded border border-amber-500/30">
+        <div className="text-xs font-mono text-[var(--popu-warning)] bg-[var(--popu-muted)] px-3 py-1.5 rounded-lg border border-[var(--popu-border)]">
           STRICT DETERMINISTIC EXECUTION
         </div>
       </div>
 
       {/* Model Spec Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {modelSpecs.map((m, idx) => (
-          <div key={idx} className="p-5 bg-slate-900 border border-slate-800 rounded-lg space-y-2.5">
+        {modelSpecs.map((model, idx) => (
+          <div
+            key={idx}
+            className="popu-surface p-5 rounded-2xl space-y-2.5"
+          >
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-slate-100 text-sm">{m.name}</span>
-              <span className="text-[10px] font-mono text-teal-300 bg-teal-500/10 px-2 py-0.5 rounded border border-teal-500/30">
-                {m.category}
+              <span className="font-semibold text-[var(--popu-text)] text-sm">
+                {model.name}
               </span>
+
+              <StatusTag label={model.category} tone="teal" />
             </div>
 
-            <div className="p-2 bg-slate-950 border border-slate-800 rounded font-mono text-xs text-teal-400">
-              {m.formula}
+            <div className="p-2 bg-[var(--popu-muted)] border border-[var(--popu-border)] rounded-lg font-mono text-xs text-[var(--popu-teal)]">
+              {model.formula}
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {m.description}
+            <p className="text-xs text-[var(--popu-sub)] leading-relaxed">
+              {model.description}
             </p>
 
-            <div className="text-[10px] font-mono text-slate-500 pt-1">
-              Backend Status: {m.status}
+            <div className="flex items-center gap-2 pt-1">
+              <span className="text-[10px] font-mono text-[var(--popu-sub)]">
+                Backend Status:
+              </span>
+
+              <StatusTag label="Implemented" tone="teal" />
             </div>
           </div>
         ))}
@@ -95,7 +105,10 @@ export const ModelsView: React.FC = () => {
 
       {/* Live Anomaly Interactive Sandbox */}
       <div className="space-y-3">
-        <h3 className="text-base font-semibold text-slate-100">Interactive Algorithm Calibration</h3>
+        <h3 className="text-base font-semibold text-[var(--popu-text)]">
+          Interactive Algorithm Calibration
+        </h3>
+
         <AnomalyChart
           anomaly={anomaly}
           onMethodChange={(updated) => setAnomaly(updated)}

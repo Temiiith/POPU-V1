@@ -9,14 +9,11 @@ import {
 } from '../../types/agent';
 import {
   ShieldAlert,
-  AlertOctagon,
-  FileCheck,
   HelpCircle,
   Brain,
   ListChecks,
   ExternalLink,
   ShieldCheck,
-  Activity,
 } from 'lucide-react';
 
 interface IntelligenceSummaryPanelProps {
@@ -41,21 +38,22 @@ export const IntelligenceSummaryPanel: React.FC<IntelligenceSummaryPanelProps> =
   onOpenBrief,
 }) => {
   return (
-    <div className="flex flex-col h-full bg-slate-900 border-l border-slate-800 overflow-y-auto">
+    <div className="flex flex-col h-full bg-[var(--popu-surface)] border-l border-[var(--popu-border)] overflow-y-auto">
       {/* Header */}
-      <div className="px-5 py-3.5 border-b border-slate-800 bg-slate-950 flex items-center justify-between shrink-0">
+      <div className="px-5 py-3.5 border-b border-[var(--popu-border)] bg-[var(--popu-muted)] flex items-center justify-between shrink-0">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--popu-text)]">
             Intelligence Summary
           </span>
-          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+
+          <div className="text-[11px] text-[var(--popu-sub)] font-mono mt-0.5">
             Epidemiological Decision Support
           </div>
         </div>
 
         <button
           onClick={onOpenBrief}
-          className="px-2.5 py-1 text-xs font-medium text-teal-300 hover:text-teal-200 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 rounded flex items-center gap-1.5 transition-colors"
+          className="px-2.5 py-1 text-xs font-medium text-[var(--popu-teal)] hover:text-[var(--popu-teal)] bg-[var(--popu-muted)] hover:bg-[var(--popu-surface)] border border-[var(--popu-teal)]/30 rounded-lg flex items-center gap-1.5 transition-colors"
         >
           <span>Full Brief</span>
           <ExternalLink className="w-3 h-3" />
@@ -64,34 +62,53 @@ export const IntelligenceSummaryPanel: React.FC<IntelligenceSummaryPanelProps> =
 
       <div className="p-4 space-y-4">
         {/* Top Status Dashboard Matrix */}
-        <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono space-y-2">
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
-            <span className="text-slate-400">Target Disease:</span>
-            <span className="text-slate-100 font-semibold">{disease}</span>
+        <div className="bg-[var(--popu-muted)] border border-[var(--popu-border)] rounded-xl p-3 text-xs font-mono space-y-2">
+          <div className="flex items-center justify-between pb-1.5 border-b border-[var(--popu-border)]">
+            <span className="text-[var(--popu-sub)]">Target Disease:</span>
+            <span className="text-[var(--popu-text)] font-semibold">
+              {disease}
+            </span>
           </div>
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
-            <span className="text-slate-400">Geography:</span>
-            <span className="text-slate-100 font-semibold">{geography}</span>
+
+          <div className="flex items-center justify-between pb-1.5 border-b border-[var(--popu-border)]">
+            <span className="text-[var(--popu-sub)]">Geography:</span>
+            <span className="text-[var(--popu-text)] font-semibold">
+              {geography}
+            </span>
           </div>
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
-            <span className="text-slate-400">Investigation Status:</span>
-            <span className="text-rose-400 font-semibold">
+
+          <div className="flex items-center justify-between pb-1.5 border-b border-[var(--popu-border)]">
+            <span className="text-[var(--popu-sub)]">
+              Investigation Status:
+            </span>
+
+            <span className="text-[var(--popu-danger)] font-semibold">
               {riskAssessment?.investigationStatus || 'Requires investigation'}
             </span>
           </div>
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
-            <span className="text-slate-400">Signal Status:</span>
-            <span className="text-amber-400 font-semibold">
+
+          <div className="flex items-center justify-between pb-1.5 border-b border-[var(--popu-border)]">
+            <span className="text-[var(--popu-sub)]">Signal Status:</span>
+
+            <span className="text-[var(--popu-warning)] font-semibold">
               {riskAssessment?.signalStatus || 'Elevated signal'}
             </span>
           </div>
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-850">
-            <span className="text-slate-400">Forecast Horizon:</span>
-            <span className="text-teal-300">{forecast?.forecastHorizonDays || 14} days</span>
+
+          <div className="flex items-center justify-between pb-1.5 border-b border-[var(--popu-border)]">
+            <span className="text-[var(--popu-sub)]">
+              Forecast Horizon:
+            </span>
+
+            <span className="text-[var(--popu-teal)]">
+              {forecast?.forecastHorizonDays || 14} days
+            </span>
           </div>
+
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Human Review:</span>
-            <span className="text-teal-400 font-semibold flex items-center gap-1">
+            <span className="text-[var(--popu-sub)]">Human Review:</span>
+
+            <span className="text-[var(--popu-teal)] font-semibold flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" />
               MANDATORY
             </span>
@@ -100,60 +117,90 @@ export const IntelligenceSummaryPanel: React.FC<IntelligenceSummaryPanelProps> =
 
         {/* Risk Assessment Card */}
         {riskAssessment && (
-          <div className="bg-slate-950/90 border border-rose-500/30 rounded-lg p-4 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none"></div>
-            <div className="flex items-center gap-2 text-rose-400 font-mono text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <ShieldAlert className="w-4 h-4 text-rose-500" />
+          <div className="bg-[var(--popu-muted)]/90 border border-[var(--popu-danger)]/30 rounded-xl p-4 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--popu-danger)]/5 rounded-full blur-xl pointer-events-none" />
+
+            <div className="flex items-center gap-2 text-[var(--popu-danger)] font-mono text-xs font-semibold uppercase tracking-wider mb-1.5">
+              <ShieldAlert className="w-4 h-4 text-[var(--popu-danger)]" />
               <span>{riskAssessment.signalTitle}</span>
             </div>
-            <div className="text-xs text-slate-300 leading-relaxed">
+
+            <div className="text-xs text-[var(--popu-sub)] leading-relaxed">
               {riskAssessment.rationale}
             </div>
-            <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] font-mono text-slate-400 flex items-center justify-between">
-              <span>Status: <strong className="text-rose-400 font-normal">{riskAssessment.investigationStatus}</strong></span>
-              <span>Horizon: 14 Days</span>
+
+            <div className="mt-3 pt-2.5 border-t border-[var(--popu-border)] text-[11px] font-mono text-[var(--popu-sub)] flex items-center justify-between">
+              <span>
+                Status:{' '}
+                <strong className="text-[var(--popu-danger)] font-normal">
+                  {riskAssessment.investigationStatus}
+                </strong>
+              </span>
+
+              <span>
+                Horizon: {forecast?.forecastHorizonDays || 14} Days
+              </span>
             </div>
           </div>
         )}
 
         {/* AI Interpretation */}
         {aiInterpretation && (
-          <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-                <Brain className="w-4 h-4 text-teal-400" />
+          <div className="bg-[var(--popu-muted)] border border-[var(--popu-border)] rounded-xl p-4 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[var(--popu-border)]">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--popu-text)]">
+                <Brain className="w-4 h-4 text-[var(--popu-teal)]" />
                 <span>AI Interpretation of Evidence</span>
               </div>
-              <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">
+
+              <span className="text-[10px] font-mono text-[var(--popu-sub)] bg-[var(--popu-surface)] px-1.5 py-0.5 rounded border border-[var(--popu-border)]">
                 AI INTERPRETATION
               </span>
             </div>
 
             <div>
-              <div className="text-xs uppercase font-mono text-slate-400 mb-1">What the system found</div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <div className="text-xs uppercase font-mono text-[var(--popu-sub)] mb-1">
+                What the system found
+              </div>
+
+              <p className="text-xs text-[var(--popu-sub)] leading-relaxed">
                 {aiInterpretation.whatSystemFound}
               </p>
             </div>
 
             <div>
-              <div className="text-xs uppercase font-mono text-slate-400 mb-1.5">Supporting Signals</div>
+              <div className="text-xs uppercase font-mono text-[var(--popu-sub)] mb-1.5">
+                Supporting Signals
+              </div>
+
               <div className="space-y-1.5">
                 {aiInterpretation.supportingSignals.map((sig, idx) => (
-                  <div key={idx} className="p-2 bg-slate-900 border border-slate-850 rounded text-xs">
-                    <div className="font-medium text-teal-300">{sig.category}: {sig.signal}</div>
-                    <div className="text-[11px] text-slate-400 mt-0.5">{sig.details}</div>
+                  <div
+                    key={idx}
+                    className="p-2 bg-[var(--popu-surface)] border border-[var(--popu-border)] rounded-lg text-xs"
+                  >
+                    <div className="font-medium text-[var(--popu-teal)]">
+                      {sig.category}: {sig.signal}
+                    </div>
+
+                    <div className="text-[11px] text-[var(--popu-sub)] mt-0.5">
+                      {sig.details}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-800/80">
-              <div className="text-xs uppercase font-mono text-slate-400 mb-1">Interpretation</div>
-              <p className="text-xs text-slate-300 leading-relaxed italic">
+            <div className="pt-2 border-t border-[var(--popu-border)]">
+              <div className="text-xs uppercase font-mono text-[var(--popu-sub)] mb-1">
+                Interpretation
+              </div>
+
+              <p className="text-xs text-[var(--popu-sub)] leading-relaxed italic">
                 "{aiInterpretation.interpretation}"
               </p>
-              <div className="text-[10px] text-slate-500 mt-2 font-mono">
+
+              <div className="text-[10px] text-[var(--popu-sub)] mt-2 font-mono">
                 {aiInterpretation.disclaimer}
               </div>
             </div>
@@ -162,94 +209,123 @@ export const IntelligenceSummaryPanel: React.FC<IntelligenceSummaryPanelProps> =
 
         {/* Uncertainty & Limitations */}
         {uncertainty && (
-          <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-                <HelpCircle className="w-4 h-4 text-amber-400" />
+          <div className="bg-[var(--popu-muted)] border border-[var(--popu-border)] rounded-xl p-4 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[var(--popu-border)]">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--popu-text)]">
+                <HelpCircle className="w-4 h-4 text-[var(--popu-warning)]" />
                 <span>Uncertainty &amp; Limitations</span>
               </div>
-              <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+
+              <span className="text-[10px] font-mono text-[var(--popu-warning)] bg-[var(--popu-warning)]/10 px-1.5 py-0.5 rounded border border-[var(--popu-warning)]/20">
                 UNCERTAINTY
               </span>
             </div>
 
             <div>
               <div className="flex items-center justify-between text-xs font-mono mb-1">
-                <span className="text-slate-400">Data Completeness Score:</span>
-                <span className="text-amber-400 font-semibold">{uncertainty.dataCompletenessScore}%</span>
+                <span className="text-[var(--popu-sub)]">
+                  Data Completeness Score:
+                </span>
+
+                <span className="text-[var(--popu-warning)] font-semibold">
+                  {uncertainty.dataCompletenessScore}%
+                </span>
               </div>
-              <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+
+              <div className="w-full bg-[var(--popu-surface)] h-1.5 rounded-full overflow-hidden">
                 <div
-                  className="bg-amber-400 h-full rounded-full"
-                  style={{ width: `${uncertainty.dataCompletenessScore}%` }}
-                ></div>
+                  className="bg-[var(--popu-warning)] h-full rounded-full"
+                  style={{
+                    width: `${uncertainty.dataCompletenessScore}%`,
+                  }}
+                />
               </div>
             </div>
 
-            <div className="text-xs text-slate-300 leading-relaxed bg-slate-900 p-2.5 rounded border border-slate-800">
+            <div className="text-xs text-[var(--popu-sub)] leading-relaxed bg-[var(--popu-surface)] p-2.5 rounded-lg border border-[var(--popu-border)]">
               {uncertainty.predictionIntervalDescription}
             </div>
 
             <div>
-              <div className="text-xs uppercase font-mono text-slate-400 mb-1">Missing Data Items</div>
-              <ul className="text-xs text-slate-400 space-y-1">
-                {uncertainty.missingDataItems.map((m, idx) => (
-                  <li key={idx} className="flex items-start gap-1.5">
-                    <span className="text-amber-400 mt-0.5">·</span>
-                    <span>{m}</span>
+              <div className="text-xs uppercase font-mono text-[var(--popu-sub)] mb-1">
+                Missing Data Items
+              </div>
+
+              <ul className="text-xs text-[var(--popu-sub)] space-y-1">
+                {uncertainty.missingDataItems.map((item, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-start gap-1.5"
+                  >
+                    <span className="text-[var(--popu-warning)] mt-0.5">
+                      -
+                    </span>
+
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="pt-2 border-t border-slate-800/80 text-[11px] font-mono text-slate-500">
-              Assumptions: {uncertainty.assumptions.join(' · ')}
+            <div className="pt-2 border-t border-[var(--popu-border)] text-[11px] font-mono text-[var(--popu-sub)]">
+              Assumptions: {uncertainty.assumptions.join(' - ')}
             </div>
           </div>
         )}
 
         {/* Recommendations */}
         {recommendations.length > 0 && (
-          <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-                <ListChecks className="w-4 h-4 text-teal-400" />
+          <div className="bg-[var(--popu-muted)] border border-[var(--popu-border)] rounded-xl p-4 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[var(--popu-border)]">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--popu-text)]">
+                <ListChecks className="w-4 h-4 text-[var(--popu-teal)]" />
                 <span>Recommended Actions</span>
               </div>
-              <span className="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+
+              <span className="text-[10px] font-mono text-[var(--popu-danger)] bg-[var(--popu-danger)]/10 px-1.5 py-0.5 rounded border border-[var(--popu-danger)]/20">
                 RECOMMENDATION
               </span>
             </div>
 
             <div className="space-y-2.5">
-              {recommendations.map((r) => (
+              {recommendations.map((recommendation) => (
                 <div
-                  key={r.id}
-                  className="p-2.5 bg-slate-900 border border-slate-850 rounded text-xs space-y-1"
+                  key={recommendation.id}
+                  className="p-2.5 bg-[var(--popu-surface)] border border-[var(--popu-border)] rounded-lg text-xs space-y-1"
                 >
                   <div className="flex items-center justify-between gap-1.5">
-                    <span className="font-semibold text-slate-100">
-                      {r.order}. {r.action}
+                    <span className="font-semibold text-[var(--popu-text)]">
+                      {recommendation.order}. {recommendation.action}
                     </span>
+
                     <span
                       className={`text-[9px] font-mono px-1 py-0.5 rounded uppercase shrink-0 ${
-                        r.urgency === 'HIGH'
-                          ? 'bg-rose-500/20 text-rose-300'
-                          : 'bg-amber-500/20 text-amber-300'
+                        recommendation.urgency === 'HIGH'
+                          ? 'bg-[var(--popu-danger)]/20 text-[var(--popu-danger)]'
+                          : 'bg-[var(--popu-warning)]/20 text-[var(--popu-warning)]'
                       }`}
                     >
-                      {r.urgency}
+                      {recommendation.urgency}
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-400">{r.operationalNote}</div>
-                  <div className="text-[10px] text-slate-500 font-mono">Owner: {r.owner}</div>
+
+                  <div className="text-[11px] text-[var(--popu-sub)]">
+                    {recommendation.operationalNote}
+                  </div>
+
+                  <div className="text-[10px] text-[var(--popu-sub)] font-mono">
+                    Owner: {recommendation.owner}
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-3 p-2.5 bg-amber-500/10 border border-amber-500/30 rounded text-amber-300 text-xs flex items-center gap-2 font-mono">
-              <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>HUMAN REVIEW REQUIRED: Public health decisions require officer sign-off.</span>
+            <div className="mt-3 p-2.5 bg-[var(--popu-warning)]/10 border border-[var(--popu-warning)]/30 rounded-lg text-[var(--popu-warning)] text-xs flex items-center gap-2 font-mono">
+              <ShieldCheck className="w-4 h-4 text-[var(--popu-warning)] shrink-0" />
+
+              <span>
+                HUMAN REVIEW REQUIRED: Public health decisions require officer sign-off.
+              </span>
             </div>
           </div>
         )}
