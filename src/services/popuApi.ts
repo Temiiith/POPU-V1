@@ -408,7 +408,7 @@ export function mapBackendResultToAgentState(
     signalTitle: `${result.overall_signal.toUpperCase()} — ${disease.toUpperCase()} SIGNAL`,
     disease,
     geography: result.geography,
-    forecastHorizon: `${result.forecast.forecast_horizon_days} days`,
+    forecastHorizon: `${result.forecast.forecastHorizonDays} days`,
     signalStatus:
       result.integrated_risk.risk_level === 'ELEVATED'
         ? 'Elevated signal'
@@ -591,13 +591,13 @@ export function mapBackendResultToAgentState(
       inputs: {
         disease,
         geography: result.geography,
-        forecastHorizonDays: result.forecast.forecast_horizon_days,
+        forecastHorizonDays: result.forecast.forecastHorizonDays,
       },
       outputs: {
         riskLevel: result.forecast.risk_level,
         riskScore: result.forecast.risk_score,
         model: result.forecast.model,
-        modelVersion: result.forecast.model_version,
+        modelVersion: result.forecast.modelName,
         predictedValues: result.forecast.predicted_values,
       },
       executionTimeMs: 0,
@@ -634,7 +634,7 @@ export function mapBackendResultToAgentState(
     toolCallsExecuted,
     dataSourcesQueried: result.evidence.evidence.map(item => item.source),
     anomalyEngine: result.anomaly.method,
-    forecastEngine: `${result.forecast.model} ${result.forecast.model_version}`,
+    forecastEngine: `${result.forecast.model} ${result.forecast.modelName}`,
        evidenceItemsCount: evidence.length,
     riskLevel: result.integrated_risk.risk_level,
     riskScore: result.integrated_risk.risk_score,
