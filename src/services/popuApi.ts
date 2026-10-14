@@ -405,7 +405,7 @@ export function mapBackendResultToAgentState(
   };
 
   const riskAssessment: RiskAssessment = {
-    signalTitle: `${result.overall_signal.toUpperCase()} — ${disease.toUpperCase()} SIGNAL`,
+    signalTitle: `${result.overall_signal.toUpperCase()} â€” ${disease.toUpperCase()} SIGNAL`,
     disease,
     geography: result.geography,
     forecastHorizon: `${result.forecast.forecastHorizonDays} days`,
@@ -443,10 +443,7 @@ export function mapBackendResultToAgentState(
       'The backend investigation engine synthesized the available evidence, anomaly analysis, forecast and integrated risk assessment.',
     disclaimer: result.notice,
   };
-
-  const recommendations: RecommendationAction[] = [];
-
-  const surveillanceEvidence = result.evidence.evidence.find(
+ const surveillanceEvidence = result.evidence.evidence.find(
     item => item.source.toLowerCase() === 'surveillance',
   );
 
@@ -461,6 +458,61 @@ export function mapBackendResultToAgentState(
   const environmentalEvidence = result.evidence.evidence.find(
     item => item.source.toLowerCase() === 'environmental',
   );
+
+  const recommendations: RecommendationAction[] = [
+  {
+    id: 'rec-01',
+    order: 1,
+    action: `Review ${disease} case records and reporting dates in ${result.geography}`,
+    owner: 'State Epidemiologist & Disease Surveillance Officers',
+    urgency: 'HIGH',
+    operationalNote:
+      'Verify case definitions, patient residence, onset dates, duplicate records and reporting completeness.',
+  },
+  {
+    id: 'rec-02',
+    order: 2,
+    action: laboratoryEvidence
+      ? 'Review laboratory evidence and verify available specimen records'
+      : 'Check laboratory reporting and specimen-confirmation availability',
+    owner: 'Public Health Laboratory Team',
+    urgency: 'HIGH',
+    operationalNote:
+      laboratoryEvidence
+        ? `Evidence summary: ${laboratoryEvidence.summary} Verify the underlying records before drawing conclusions.`
+        : 'Confirm whether testing and specimen records are available. No laboratory evidence was returned for this investigation.',
+  },
+  {
+    id: 'rec-03',
+    order: 3,
+    action: hospitalEvidence
+      ? 'Review hospital reports and verify facility-level trends'
+      : `Check reporting completeness across facilities in ${result.geography}`,
+    owner: 'Health Facility Surveillance Team',
+    urgency: 'MEDIUM',
+    operationalNote:
+      hospitalEvidence
+        ? `Evidence summary: ${hospitalEvidence.summary} Validate against facility source records.`
+        : 'Check reporting delays, missing submissions and facility coverage. Hospital evidence was not returned in this result.',
+  },
+  {
+    id: 'rec-04',
+    order: 4,
+    action:
+      disease === 'Cholera'
+        ? 'Review water, sanitation and environmental information around the signal area'
+        : disease === 'Lassa fever'
+          ? 'Review relevant exposure histories and environmental risk information'
+          : 'Review relevant vector and environmental surveillance information',
+    owner: 'Public Health & Environmental Surveillance Team',
+    urgency: 'MEDIUM',
+    operationalNote: environmentalEvidence
+      ? `Evidence summary: ${environmentalEvidence.summary} Verify the finding and its relevance before interpreting it.`
+      : 'Check whether relevant environmental information is available and arrange verification where appropriate. No environmental evidence was returned in this result.',
+  },
+];
+
+
 
   const toolCallsExecuted = [
     {

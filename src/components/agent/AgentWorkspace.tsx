@@ -107,6 +107,11 @@ const statusIcon = (status: string) =>
       size={15}
       className="text-[var(--popu-teal)]"
     />
+  ) : status === 'failed' ? (
+    <AlertTriangle
+      size={15}
+      className="text-[var(--popu-warning)]"
+    />
   ) : status === 'running' ? (
     <RefreshCw
       size={15}
@@ -118,7 +123,6 @@ const statusIcon = (status: string) =>
       className="text-[var(--popu-sub)]"
     />
   );
-
 const evidenceIcon = (category: string) =>
   category === 'LABORATORY' ? (
     <FlaskConical size={15} />
@@ -143,6 +147,8 @@ export const AgentWorkspace: React.FC<Props> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [query, setQuery] = useState(initialPrompt || '');
   const [started, setStarted] = useState(false);
+  const [aiInterpretationStatus, setAiInterpretationStatus] =
+  useState<'idle' | 'loading' | 'success' | 'unavailable'>('idle');
   const autoRunRef = useRef(false);
 
   const [selectedDisease, setSelectedDisease] =
@@ -181,11 +187,13 @@ export const AgentWorkspace: React.FC<Props> = ({
       return;
     }
 
-    setState(prev => ({
-      ...prev,
-      isInvestigating: true,
-      activeStepId: 'parse-request',
-    }));
+   setState(prev => ({
+  ...emptyState(),
+  isInvestigating: true,
+  activeStepId: 'parse-request',
+  activeDisease: prev.activeDisease,
+  activeGeography: prev.activeGeography,
+}));
 
     setStarted(true);
     setQuery(text);
@@ -204,6 +212,7 @@ export const AgentWorkspace: React.FC<Props> = ({
     ]);
 
     try {
+      setAiInterpretationStatus('loading');
       const backendResult = await investigateWithBackend(
         text,
         forecastHorizon,
@@ -382,14 +391,26 @@ export const AgentWorkspace: React.FC<Props> = ({
             step => step.status === 'completed',
           );
 
-        return {
-          ...phase,
-          status: allCompleted
-            ? 'completed'
-            : hasRunning
-              ? 'running'
-              : 'pending',
-        };
+      const hasFailed = phaseSteps.some(
+  step => step.status === 'failed',
+);
+
+const hasCompleted = phaseSteps.some(
+  step => step.status === 'completed',
+);
+
+return {
+  ...phase,
+  status: hasFailed
+    ? 'failed'
+    : allCompleted
+      ? 'completed'
+      : hasRunning
+        ? 'running'
+        : hasCompleted
+          ? 'running'
+          : 'pending',
+};
       }),
     [state.steps],
   );
@@ -511,9 +532,9 @@ export const AgentWorkspace: React.FC<Props> = ({
           >
             <Play size={14} />
 
-            {state.isInvestigating
-              ? 'Investigating...'
-              : 'Investigate Signal'}
+           {state.isInvestigating
+  ? 'Analyzing signals...'
+  : 'Investigate Signal'}
           </button>
 
           <div className="mt-3 text-[11px] text-[var(--popu-sub)]">
@@ -570,7 +591,11 @@ export const AgentWorkspace: React.FC<Props> = ({
                 onClick={() => void run(query)}
                 className="px-4 h-11 rounded-xl bg-[var(--popu-navy)] text-white text-xs font-bold flex items-center gap-2 disabled:opacity-50"
               >
-                <Play size={14} />
+                {state.isInvestigating ? (
+  <RefreshCw size={14} className="animate-spin" />
+) : (
+  <Play size={14} />
+)}
 
                 {state.isInvestigating
                   ? 'Running...'
@@ -745,7 +770,7 @@ export const AgentWorkspace: React.FC<Props> = ({
                 </div>
               </div>
 
-              <div className="mt-5 rounded-xl bg-slate-950 p-4 text-white border border-white/10">
+              <div className="mt-5 rounded-xl bg-[var(--popu-surface)] p-4 text-[var(--popu-text)] border border-[var(--popu-border)]">
                 <div className="flex items-center gap-2 text-xs font-bold">
                   <ShieldCheck
                     size={15}
@@ -755,7 +780,7 @@ export const AgentWorkspace: React.FC<Props> = ({
                   AI interpretation - review before action
                 </div>
 
-                <p className="text-xs text-white/70 mt-2 leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs text-[var(--popu-sub)] mt-2 leading-relaxed whitespace-pre-wrap">
                   {state.aiInterpretation?.interpretation ||
                     'POPU will explain the relationship between observed signals, statistical outputs and model results after the investigation completes.'}
                 </p>
@@ -801,15 +826,24 @@ export const AgentWorkspace: React.FC<Props> = ({
                       stroke="var(--popu-teal)"
                       strokeWidth="2.2"
                     />
+                    <div className="absolute left-0 top-0 flex flex-wrap items-center gap-4 text-[10px]">
+  <div className="flex items-center gap-1.5">
+    <span className="w-4 h-0.5 bg-[var(--popu-teal)]" />
+    <span className="text-[var(--popu-text)]">
+      Observed cases
+    </span>
+  </div>
+
+  <div className="flex items-center gap-1.5">
+    <span className="w-4 border-t border-dashed border-[var(--popu-sub)]" />
+    <span className="text-[var(--popu-sub)]">
+      Historical baseline
+    </span>
+  </div>
+</div>
                   </svg>
 
-                  <div className="absolute left-0 bottom-0 text-[9px] text-[var(--popu-sub)]">
-                    historical baseline
-                  </div>
-
-                  <div className="absolute right-0 top-0 text-[9px] text-[var(--popu-teal)] font-bold">
-                    observed
-                  </div>
+                  
                 </div>
               ) : (
                 <Empty label="Run the investigation to populate the statistical series." />

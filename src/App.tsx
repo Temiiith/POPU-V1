@@ -29,6 +29,7 @@ import { SurveillanceService } from './services/surveillanceService';
 
 export default function App(){
  const [view,setView]=useState('agent');
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 const [prompt,setPrompt]=useState('');
 const [brief,setBrief]=useState(false);
 const [agentKey,setAgentKey]=useState(0);
@@ -65,23 +66,30 @@ const toggleTheme = () => {
   }, [theme]);
   return (
     <div className="min-h-screen flex flex-col bg-[var(--popu-bg)] text-[var(--popu-text)]">
-      <Navbar
-        onNewInvestigation={() => launch('Investigate the latest public health signal in Nigeria')}
-        onOpenBrief={() => setBrief(true)}
-        onOpenSearch={() => setSearchOpen(true)}
-
-      onOpenMobileMenu={() => {}}
-      onToggleTheme={toggleTheme}
-      theme={theme}
-        currentView={view}
-        onSelectView={setView}
-      />
+    
+<Navbar
+  onNewInvestigation={() =>
+    launch('Investigate the latest public health signal in Nigeria')
+  }
+  onOpenBrief={() => setBrief(true)}
+  onOpenSearch={() => setSearchOpen(true)}
+  onOpenMobileMenu={() => setMobileMenuOpen(true)}
+  onToggleTheme={toggleTheme}
+  theme={theme}
+  currentView={view}
+  onSelectView={setView}
+/>
 
       <div className="flex flex-1 min-h-0">
         <Sidebar
-          currentView={view}
-          onSelectView={setView}
-        />
+  currentView={view}
+  onSelectView={(nextView) => {
+    setView(nextView);
+    setMobileMenuOpen(false);
+  }}
+  mobileOpen={mobileMenuOpen}
+  onCloseMobile={() => setMobileMenuOpen(false)}
+/>
 
         <main className="flex-1 min-w-0 overflow-y-auto">
           {view === 'agent' ? (
